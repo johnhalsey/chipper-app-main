@@ -12,7 +12,12 @@ const props = defineProps({
 
 const isFavoriteUser = computed(() => {
 	return user.favorites.users.length &&
-		user.favorites.users.filter(favorite => favorite.id === props.post.user.id).length ? true : false
+	user.favorites.users.filter(favorite => favorite.id === props.post.user.id).length ? true : false
+})
+
+const isFavoritePost = computed(() => {
+	return user.favorites.posts.length &&
+	user.favorites.posts.filter(favorite => favorite.id === props.post.id).length ? true : false
 })
 
 async function toggleFavoriteUser () {
@@ -20,6 +25,14 @@ async function toggleFavoriteUser () {
 		await user.removeFavoriteUser(props.post.user.id)
 	} else {
 		await user.addFavoriteUser(props.post.user.id)
+	}
+}
+
+async function toggleFavoritePost () {
+	if (isFavoritePost.value) {
+		await user.removeFavoritePost(props.post.id)
+	} else {
+		await user.addFavoritePost(props.post.id)
 	}
 }
 </script>
@@ -49,12 +62,20 @@ async function toggleFavoriteUser () {
 		<p>
 			{{ post.body }}
 		</p>
-		<button class="bg-red-200 text-red-500 flex items-center justify-center gap-2 p-4 rounded-lg">
+		<button class="bg-red-200 text-red-500 flex items-center justify-center gap-2 p-4 rounded-lg"
+						@click="toggleFavoritePost"
+		>
 			<HeartIcon
-					class="h-6 stroke-current"/>
-			<span class="font-bold">
-        Add to my favorites
+					class="h-6 stroke-current"
+					:class="{'fill-current': isFavoritePost}"
+			/>
+			<span v-if="isFavoritePost"
+						class="font-bold">
+        Remove from my favorites
       </span>
+			<span v-else>
+					Add to my favorites
+				</span>
 		</button>
 	</div>
 </template>

@@ -93,6 +93,20 @@ export const useUser = defineStore('user', () => {
 				})
 	}
 
+	async function addFavoritePost (id) {
+		await $api.post('/posts/' + id + '/favorite')
+				.then(() => {
+					fetchFavorites()
+				})
+	}
+
+	async function removeFavoritePost (id) {
+		await $api.delete('/posts/' + id + '/favorite')
+				.then(() => {
+					fetchFavorites()
+				})
+	}
+
 	return {
 		started,
 		data,
@@ -106,7 +120,9 @@ export const useUser = defineStore('user', () => {
 		logout,
 		fetchFavorites,
 		addFavoriteUser,
-		removeFavoriteUser
+		removeFavoriteUser,
+		addFavoritePost,
+		removeFavoritePost
 	}
 })
 
