@@ -7,6 +7,7 @@ const { $api } = useNuxtApp()
 const user = useUser()
 
 const { data: posts } = await $api.get('posts')
+user.fetchFavorites()
 </script>
 
 <template>
